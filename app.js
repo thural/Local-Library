@@ -3,10 +3,58 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const Book = require('./model/Book')
+
+// Set up default mongoose connection
+const mongoose = require('mongoose')
+const dbURL = 'mongodb+srv://m001-student:<password>@sandbox.x5uqmtb.mongodb.net/sample_training?retryWrites=true&w=majority'
+mongoose.connect(dbURL);
+// Get the default connection
+const db = mongoose.connection;
+// Bind connection to error event (to get notification of connection errors)
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+// // create a new book and save it
+// const book = new Book({
+
+// })
+
+
+// // save and print the first book
+// const findFirstBook = async function() {
+//   // save/insert the book into books collection
+// await book.save()
+//   // find a single book
+// const firstBook = await Book.findOne({});
+// console.log(firstBook);
+// }
+// findFirstBook()
+
+//test schema and model
+const ZipSchema = new mongoose.Schema({
+  city: String,
+  zip: String,
+  pop: Number,
+  state: String
+})
+// test model (or route to collection)
+const Zip = mongoose.model("Zip", ZipSchema);
+// a test query
+const findZip = async function () {
+  const zip = await Zip.find({state:"NY", pop:{"$lt":100}}).limit(3)
+  console.log(zip)
+}
+findZip()
+
+
+
+
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//Express server app
 var app = express();
 
 // view engine setup
