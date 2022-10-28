@@ -96,9 +96,11 @@ router.route("/bookinstance/:id/update")
 .get(book_instance_controller.bookinstance_update_get)
 .post(book_instance_controller.bookinstance_update_post);
 
-// requests for one BookInstance.
-router.route("/bookinstances")
-.get(book_instance_controller.bookinstance_detail)
-.get(book_instance_controller.bookinstance_list);
+// GET request for one BookInstance.
+router.get("/bookinstance/:id", book_instance_controller.bookinstance_detail);
+
+// GET request for list of all BookInstance.
+router.get("/bookinstances", book_instance_controller.bookinstance_list);
+
 
 module.exports = router;
