@@ -27,7 +27,7 @@ AuthorSchema.virtual("name").get(function () {
 // Virtual for author's URL
 AuthorSchema.virtual("url").get(function () {
   // We don't use an arrow function as we'll need the this object
-  return `/catalog/author/${this._id}`;
+  return `/catalog/authors/${this._id}`;
 });
 
 // Virtual for author's birth date

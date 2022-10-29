@@ -5,9 +5,13 @@ var logger = require('morgan');
 var path = require('path');
 
 //Import routes
+const bookInstanceRouter = require('./routes/bookinstance');
+const catalogRouter = require('./routes/catalog')
+const authorRouter = require('./routes/author');
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const catalogRouter = require("./routes/catalog");
+const genreRouter = require('./routes/genre')
+const bookRouter = require('./routes/book');
 
 // Set up default mongoose connection
 const mongoose = require('mongoose')
@@ -32,11 +36,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
 
+// define routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
+app.use('/catalog/books', bookRouter);
+app.use('/catalog/genres', genreRouter);
+app.use('/catalog/authors', authorRouter);
+app.use('/catalog/bookinstances', bookInstanceRouter);
 
-// Error Handling
+//// Error Handling
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

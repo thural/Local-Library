@@ -29,6 +29,7 @@ exports.detail = (req, res, next) => {
       },
     },
     (err, results) => {
+      console.log("results: ", results)
       if (err) return next(err);
       if (results.genre == null) {
         // No results.
@@ -36,6 +37,7 @@ exports.detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+
       // Successful, so render
       res.render("genre_detail", {
         title: "Genre Detail",
