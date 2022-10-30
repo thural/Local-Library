@@ -6,7 +6,6 @@ const BookInstance = require("../models/bookinstance");
 const { body, validationResult } = require("express-validator");
 
 const async = require("async");
-const bookinstance = require("../models/bookinstance");
 
 exports.index = (req, res) => {
   async.parallel(
@@ -94,9 +93,7 @@ exports.create_get = (req, res, next) => {
       },
     },
     (err, results) => {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       res.render("book_form", {
         title: "Create Book",
         authors: results.authors,
@@ -161,9 +158,7 @@ exports.create_post = [
           },
         },
         (err, results) => {
-          if (err) {
-            return next(err);
-          }
+          if (err) return next(err);
 
           // Mark our selected genres as checked.
           for (const genre of results.genres) {
@@ -185,15 +180,12 @@ exports.create_post = [
 
     // Data from form is valid. Save book.
     book.save((err) => {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       // Successful: redirect to new book record.
       res.redirect(book.url);
     });
   },
 ];
-
 
 // Display Book delete form on GET.
 exports.delete_get = (req, res, next) => {
@@ -219,7 +211,6 @@ exports.delete_get = (req, res, next) => {
   );
 };
 
-
 // Handle Author delete on POST.
 exports.delete_post = (req, res, next) => {
   async.parallel(
@@ -228,7 +219,7 @@ exports.delete_post = (req, res, next) => {
         Book.findById(req.body.bookid).exec(callback);
       },
       book_instances(callback) {
-        BookInstance.find({ book: req.body.bookid }).exec(callback);
+        BookInstance.find({ book: req.body.bookid }).populate('book').exec(callback);
       },
     },
     (err, results) => {
@@ -271,9 +262,7 @@ exports.update_get = (req, res, next) => {
       },
     },
     (err, results) => {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       if (results.book == null) {
         // No results.
         const err = new Error("Book not found");
@@ -299,14 +288,12 @@ exports.update_get = (req, res, next) => {
   );
 };
 
-
 // Handle book update on POST.
 exports.update_post = [
   // Convert the genre to an array
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
-      req.body.genre =
-        typeof req.body.genre === "undefined" ? [] : [req.body.genre];
+      req.body.genre = typeof req.body.genre === "undefined" ? [] : [req.body.genre];
     }
     next();
   },
@@ -356,15 +343,11 @@ exports.update_post = [
           },
         },
         (err, results) => {
-          if (err) {
-            return next(err);
-          }
+          if (err) return next(err);
 
           // Mark our selected genres as checked.
           for (const genre of results.genres) {
-            if (book.genre.includes(genre._id)) {
-              genre.checked = "true";
-            }
+            if (book.genre.includes(genre._id)) genre.checked = "true";
           }
           res.render("book_form", {
             title: "Update Book",
@@ -380,10 +363,7 @@ exports.update_post = [
 
     // Data from form is valid. Update the record.
     Book.findByIdAndUpdate(req.params.id, book, {}, (err, thebook) => {
-      if (err) {
-        return next(err);
-      }
-
+      if (err) return next(err);
       // Successful: redirect to book detail page.
       res.redirect(thebook.url);
     });

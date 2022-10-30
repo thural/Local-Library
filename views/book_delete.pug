@@ -18,7 +18,7 @@ block content
     p Do you really want to delete this Book?
 
     form(method='POST' action='')
-      //div.form-group
-        //input#authorid.form-control(type='hidden',name='authorid', required='true', value=author._id )
+      div.form-group
+        input#bookid.form-control(type='hidden',name='bookid', required='true', value=book._id )
 
       button.btn.btn-primary(type='submit') Delete
