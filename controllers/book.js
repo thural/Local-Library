@@ -6,6 +6,7 @@ const BookInstance = require("../models/bookinstance");
 const { body, validationResult } = require("express-validator");
 
 const async = require("async");
+const bookinstance = require("../models/bookinstance");
 
 exports.index = (req, res) => {
   async.parallel(
@@ -194,14 +195,61 @@ exports.create_post = [
 ];
 
 
-// Display book delete form on GET.
-exports.delete_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Book delete GET");
+// Display Book delete form on GET.
+exports.delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      book(callback) {
+        Book.findById(req.params.id).exec(callback);
+      },
+      book_instances(callback) {
+        BookInstance.find({ book: req.params.id }).populate('book').exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) return next(err);
+      if (results.book == null) res.redirect("/catalog/books"); // No results, redirect back to book list.
+      // Successful, so render.
+      res.render("book_delete", {
+        title: "Delete Book",
+        book: results.book,
+        book_instances: results.book_instances
+      });
+    }
+  );
 };
 
-// Handle book delete on POST.
-exports.delete_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Book delete POST");
+
+// Handle Author delete on POST.
+exports.delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      book(callback) {
+        Book.findById(req.body.bookid).exec(callback);
+      },
+      book_instances(callback) {
+        BookInstance.find({ book: req.body.bookid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) return next(err);
+      // fetch success
+      if (results.book_instances.length > 0) {
+        // Book has instances. Render in same way as for GET route.
+        res.render("book_delete", {
+          title: "Delete Book",
+          book: results.book,
+          book_instances: results.book_instances,
+        });
+        return;
+      }
+      // BOOK has no insatances. Delete object and redirect to the list of books.
+      Book.findByIdAndRemove(req.body.bookid, (err) => {
+        if (err) return next(err);
+        res.redirect("/catalog/books"); // Success - go back to book list
+      });
+    }
+  );
 };
 
 // Display book update form on GET.
