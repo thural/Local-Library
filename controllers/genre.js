@@ -50,7 +50,8 @@ exports.detail = (req, res, next) => {
 };
 
 // Display Genre create form on GET.
-exports.create_get = (req, res) => {
+exports.create_get = (req, res, next) => {
+  console.log("server hit the create_get")
   res.render("genre_form", { title: "Create Genre" });
 };
 
@@ -71,7 +72,7 @@ exports.create_post = [
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("genre_form", {
         title: "Create Genre",
-        genre,
+        name: genre.name,
         errors: errors.array(),
       });
       return;

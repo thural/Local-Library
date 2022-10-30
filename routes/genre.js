@@ -8,14 +8,14 @@ const genre = require("../controllers/genre");
 // GET request for list of all Genres.
 router.get("/", genre.list);
 
-// GET request for one Genre.
-router.get("/:id", genre.detail);
-
 // requests for creating a Genre.
 // NOTE This must come before route that displays Genre (uses id).
 router.route("/create")
 .get(genre.create_get)
 .post(genre.create_post);
+
+// GET request for one Genre.
+router.get("/:id", genre.detail);
 
 // requests to delete Genre.
 router.route("/:id/delete")
