@@ -1,6 +1,7 @@
 {
   "name": "local-library",
   "version": "1.0.0",
+  "main": "app.js",
   "engines": {
     "node": "16.18.0"
   },
