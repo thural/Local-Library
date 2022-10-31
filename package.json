@@ -1,6 +1,9 @@
 {
   "name": "local-library",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.18.0"
+  },
   "description": "an app to practice MVC following MDN Express guide.",
   "private": true,
   "scripts": {
@@ -20,14 +23,15 @@
   "homepage": "https://github.com/thural/Local-Library#readme",
   "dependencies": {
     "async": "^3.2.4",
+    "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-validator": "^6.14.2",
+    "helmet": "^6.0.0",
     "http-errors": "~1.6.3",
     "luxon": "^3.0.4",
     "mongoose": "^6.7.0",
-    "morgan": "~1.9.1",
     "pug": "^3.0.2"
   }
 }
