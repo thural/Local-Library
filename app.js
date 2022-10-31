@@ -16,7 +16,7 @@ const bookRouter = require('./routes/book');
 
 // Set up default mongoose connection
 const mongoose = require('mongoose')
-const dev_db_url = 'mongodb+srv://thural:qI1F7MuyKSxkDFrd@cluster0.rlei7la.mongodb.net/local_library?retryWrites=true&w=majority';
+const dev_db_url = 'mongodb+srv://thural:qI1F7MuyKSxkDFrd@cluster0.rlei7la.mongodb.net/local_library?retryWrites=true';
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 // Get the default connection
